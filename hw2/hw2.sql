@@ -1,5 +1,11 @@
 -- 1.
-select
+select *, adj_close-prev_adj_close as price_change
+from (select ticker, date, adj_close,
+       lead(adj_close, -1) over (
+           partition by ticker) -- automatically sorted by ticker (as well as date) desc
+       as prev_adj_close
+       from stock_prices) as consec_sp;
+/*select
     cur_sp.ticker,
     cur_sp.date,
     cur_sp.adj_close,
@@ -9,7 +15,7 @@ from stock_prices cur_sp
 left join stock_prices prev_sp -- left-join to keep nulls
 on date(cur_sp.date, '-1 day')=prev_sp.date and
 cur_sp.ticker = prev_sp.ticker
-order by cur_sp.ticker, cur_sp.date; -- self-join for clean code
+order by cur_sp.ticker, cur_sp.date; -- self-join for clean code*/
 
 
 
