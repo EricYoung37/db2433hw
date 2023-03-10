@@ -1,7 +1,7 @@
 -- 1.
 select *, adj_close-prev_adj_close as price_change
 from (select ticker, date, adj_close,
-       lead(adj_close, -1) over (
+       lag(adj_close, 1) over (
            partition by ticker) -- automatically sorted by ticker (as well as date) desc
        as prev_adj_close
        from stock_prices) as consec_sp;
