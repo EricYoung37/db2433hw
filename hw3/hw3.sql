@@ -9,14 +9,8 @@ create table if not exists Violation (
 
 insert into Violation (A, B, C, D)
 values
-('a',1, 50, 51),
-('b',2, 60, 61),
-('c',3, 70, 71),
-('c',9, 80, 81),
-('d',4, 90, 91),
-('d',8, 100, 101),
-('d',16, 110, 111),
-('e',5, 120, 121);
+('a',1, 22, 33),
+('a',2, 50, 60);
 
 create table if not exists NoViolation (
   id integer primary key,
@@ -28,15 +22,12 @@ create table if not exists NoViolation (
 
 insert into NoViolation (A, B, C, D)
 values
-('a',1, 20, 10),
-('b',2, 30, 11),
-('c',3, 40, 12),
-('d',4, 50, 13),
-('e',5, 60, 14);
+('a',1, 22, 33),
+('b',2, 50, 60);
 
--- return the attributes A that cannot determine B
+-- return the attributes of A that cannot determine B
 
--- returns attributes c, d since FD A->B does NOT hold for them
+-- returns attribute a since FD A->B does NOT hold for it
 select A from Violation
 group by A
 having count(distinct B)>1;
@@ -46,11 +37,10 @@ select A from NoViolation
 group by A
 having count(distinct B)>1;
 
-/*
--- Alternative:
--- return the number of attributes A that cannot determine B
+/*-- Alternative:
+-- return the number of attributes of A that cannot determine B
 
--- returns 2 for c, d which are violation cases
+-- returns 1 for a which is the violation case
 select count(distinct A) from
     (select r1.A
     from Violation as r1
