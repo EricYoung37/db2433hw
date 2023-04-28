@@ -37,7 +37,7 @@ select A from NoViolation
 group by A
 having count(distinct B)>1;
 
-/*-- Alternative:
+/*-- Alternative testing query using self-join:
 -- return the number of attributes of A that cannot determine B
 
 -- returns 1 for a which is the violation case
